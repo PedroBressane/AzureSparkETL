@@ -1,2 +1,1 @@
-End to End batch ETL job using Microsoft Azure and Spark for Transformations, visualizations in output local directory
-
+End to end ETL project using Python and Azure Cloud to process Pyspark transformations, generating visualisations after. Extract from a CSV file in local path, upload in a Azure Virtual Machine, configure the Masters and Slaves for Spark batch process, do the transformations in cloud environment and view the results in local output directory
