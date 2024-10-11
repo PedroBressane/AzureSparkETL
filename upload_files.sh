@@ -1,0 +1,1 @@
+scp -i 'tipe your vm.pem here' -r ./src/* azureuser@'tipe your azure vm ip here':/home/azureuser
