@@ -11,7 +11,7 @@ You can create manually too.
 run pip install --upgrade pip if needed
 
 Then we need to download the file we want to do transformations, I used https://www.kaggle.com/datasets/georgehanyfouad/global-income-inequality but you can use any dataset you want
-Go to https://www.kaggle.com and search in datasets 'Global Income Inequality'
+Go to https://www.kaggle.com and search in datasets 'Global Income Inequality'. Download file.
 
 5 - Back in the PyCharm, go to src folder and execute in terminal src touch docker-compose.yaml to create our docker-compose orquestrator. This file sets our master and worker nodes, there will be 4 configured workers and we expose ports 9090 and 7077 to submit jobs, all you need is to copy and paste it in your code. 
 
@@ -33,6 +33,20 @@ Copy and paste the code, but replace the 'tipe your vm.pem here' with tour pair 
 
 11 - Lets create the download .sh to push files from VM into our on premisse folder. Open terminal and type "touch download_files.sh", make sure we are not inside src folders.
 Copy and paste the code, but repalce the 'tipe your vm.pem here' with tour pair key name and 'tipe your azure vm ip here' with the noted VM IP.
+
+12 - Now we need to install docker in VM Machine, to create a Dockerfile.spak in our code, this file will create a container (cluster) with our jobs in worker nodes on Azure VM. 
+Go to https://docs.docker.com/compose/install/ to check the instalation files. 
+
+13 - Now we need to connect into Azure VM, in our terminal type "ssh azureuser@<your_vm_ip_adress> -i <your-pair-key.pem>. For example "ssh azureuser@10.0.0.1 -i spark-cluster-key.pem
+then you need to confirm (type yes) to connect with VM, now we are in home directory of Azure VM, to check if everything is fine type pwd in terminal and we should be in /home/azureuser
+Type "sudo apt-get update" and wait installation, now type "sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin" to install docker files.
+
+14 - Ok, then we go back to our code and check in docker-compose.yaml file, there is a path to Dockerfile.park
+We need to create it so clusters can run Dockerfile, but we need to create it inside src folder, we want to upload it together with docker-compose.yaml
+Navigate inside src folder and type "touch Dockerfile.spark" or in home folder "touch src/Dockerfile.spark". Copy the code inside file.
+
+15 - Now we need to set our requirements.txt, in local terminal type "pip freeze > requirements.txt" to create and update the requirements file, the Dockerfile will install any library from it into our clusters/workers. 
+
 
 
 
