@@ -11,7 +11,7 @@ You can create manually too.
 run pip install --upgrade pip if needed
 
 Then we need to download the file we want to do transformations, I used https://www.kaggle.com/datasets/georgehanyfouad/global-income-inequality but you can use any dataset you want
-Go to https://www.kaggle.com and search in datasets 'Global Income Inequality'. Download file.
+Go to https://www.kaggle.com and search in datasets 'Global Income Inequality'. Download file, copy and paste it in src/input folder. (I rename it for global_income.csv)
 
 5 - Back in the PyCharm, go to src folder and execute in terminal src touch docker-compose.yaml to create our docker-compose orquestrator. This file sets our master and worker nodes, there will be 4 configured workers and we expose ports 9090 and 7077 to submit jobs, all you need is to copy and paste it in your code. 
 
@@ -21,7 +21,7 @@ Now we need to configure our cloud environment in Azure Portal. Go to https://po
 In Authentication type select SSH Public Key, this is how we will download and upload files from our local PyCharm into Azure. Username I recommend azureuser, ssh public key source is 'Generate new key pair'.
 In Key pair name I suggest spark-cluster-key or something like it, we will need to keep this files inside our folder to connect into Azure. Everything is default, them deploy.
 
-7 - We need to 'Download the private key and create resource' to download ssh pair keys (file.pem). After the deployment is completed, we need to configure the port to access the VM. Go to your created Spark cluster VM and go to connect to see your IP address, note it to use in future.
+7 - We need to 'Download the private key and create resource' to download ssh pair keys (file.pem). After the deployment is completed, we need to configure the port to access the VM. Go to your created Spark cluster VM and go to connect to see your IP address, note it to use in future. Now we need to expose the port 9090, so in our VM we need to go in Networ Settings under Networking (left panel), "create port rule" and Inbound port rule. In Destination port ranges type 9090 and we click on ADD, now the port is exposed to us.  
 
 8 - Back to code, we will create a bash file to upload our src folders/files/jobs into Azure VM and another to download the results from it, but we need to create then outside these folders (we don't want to send them to VM's don't we?)
 
@@ -47,6 +47,28 @@ Navigate inside src folder and type "touch Dockerfile.spark" or in home folder "
 
 15 - Now we need to set our requirements.txt, in local terminal type "pip freeze > requirements.txt" to create and update the requirements file, the Dockerfile will install any library from it into our clusters/workers. 
 
+16 - If woy want to test it, in local terminal run the upload_files.sh (click on file then in > in left code bar), after complete the upload go to azure terminal (the one connected with ssh) and run "sudo docker compose up -d".
+
+17 - To find your spark-master IP type the VM IP followed by :9090 - Example 10.0.0.1:9090
+You see the master-ip as Spark Master at spark://<vm=ip>:7077, note it to use latter.
+
+17 - If everything works fine, congratulations! We just need to configure our jobs/transformations, go back to our project and create the jobs file, type "touch src/jobs/transforms_and_views.py" to create it.  
+I will not go deep in explanation, the comments are in the code, but basically we do this sequence below:
+Name spark session, create dataframe, standardize columns and replace names, drop nulls and alter order, insert some columns and information, update dataframe, create 3 views, convert to pandas and display into html file.
+Average income by continent visualisation - 1
+Top 10 most unequal country in the years of 2021 to 2023 visualisation - 2
+Display the output on map visualisation - 3
+The last one is the coolest but it takes a long time to set the configurations.
+
+Then write all files in output folder and stop spark sessions.
+
+So, in order to run everything you need to: 
+Place input file into input folder
+Upload files with upload_files.sh
+Connect into Azure VM (from terminal) and run the jobs, type in azure connected ssh "docker exec -it azureuser-spark-master-1 spark-submit --master spark://<vm=ip>:7077 jobs/transforms_and_view.py"
+Then download files with download_files.sh and execute the html in src/output folder
+
+Thanks! If there is any doubt, just get in touch or msg me on GitHub or LinkedIn (https://www.linkedin.com/in/pedro-bressane/)
 
 
 
