@@ -33,7 +33,7 @@ For authentication, choose SSH Public Key. Use azureuser as the username and gen
 Download the private key file (.pem) for later use and complete the VM deployment.
 
 Configure Network Ports
-In the VM Networking settings, add an inbound port rule to expose port 9090 for Spark master access.
+In the VM Networking settings, add an inbound port rule to expose port 8080 for Spark master access.
 
 Create Upload and Download Scripts
 In the project root, create two bash scripts:
