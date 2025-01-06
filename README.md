@@ -65,7 +65,7 @@ Run the upload_files.sh script from your local terminal to transfer files to the
 Launch the Spark Cluster
 Connect to the Azure VM and start Docker containers:
 sudo docker compose up -d
-Find your Spark master IP at <vm_ip_address>:9090. Note the Spark master URI, spark://<vm_ip>:7077, for job submission.
+Find your Spark master IP at <vm_ip_address>:8080. Note the Spark master URI, spark://<vm_ip>:7077, for job submission.
 
 Write and Run Transformation Jobs
 In src/jobs, create transforms_and_views.py for your Spark job.
